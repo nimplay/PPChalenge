@@ -1,0 +1,51 @@
+# SQLite. Versions 3.8.0 and up are supported.
+#   gem install sqlite3
+#
+#   Ensure the SQLite 3 gem is defined in your Gemfile
+#   gem "sqlite3"
+#
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: localhost
+  port: 5432
+  timeout: 5000
+
+development:
+  <<: *default
+  database: storageDT_development
+  username: postgres
+  password: <%= ENV['DEV_DATABASE_PASSWORD'] %>
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: storageDT_test
+  username: postgres
+  password: <%= ENV['TEST_DATABASE_PASSWORD'] %>
+
+
+# Store production database in the storage/ directory, which by default
+# is mounted as a persistent Docker volume in config/deploy.yml.
+production:
+  primary:
+    <<: *default
+    database: storageDT_production
+    username: <%= ENV['PROD_DB_USER'] %>
+    password: <%= ENV['PROD_DB_PASSWORD'] %>
+    host: <%= ENV['PROD_DB_HOST'] %>
+  cache:
+    <<: *default
+    database: storageDT_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *default
+    database: storageDT_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *default
+    database: storageDT_production_cable
+    migrations_paths: db/cable_migrate

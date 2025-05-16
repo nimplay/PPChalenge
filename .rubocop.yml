@@ -1,0 +1,25 @@
+inherit_from: .rubocop_todo.yml
+
+# Omakase Ruby styling for Rails
+inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+
+
+AllCops:
+  TargetRubyVersion: 3.2.2
+  NewCops: enable
+  Exclude:
+    - "db/**/*"
+    - "bin/*"
+    - "vendor/**/*"
+    - "node_modules/**/*"
+
+
+require:
+  - rubocop-performance
+  - rubocop-rspec
+
+
+Metrics/BlockLength:
+  Exclude:
+    - "config/routes.rb"
+    - "spec/**/*" 

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+</head>
+<body>
+  <h1>Reporte de Compras del <%= @report[:date] %></h1>
+
+  <h2>Resumen</h2>
+  <ul>
+    <li>Total de compras: <%= @report[:total_purchases] %></li>
+    <li>Ingresos totales: $<%= number_with_delimiter(@report[:total_revenue].round(2)) %></li>
+    <li>Nuevos clientes: <%= @report[:new_customers] %></li>
+  </ul>
+
+  <% if @report[:top_products].any? %>
+  <h2>Productos más vendidos</h2>
+  <ol>
+    <% @report[:top_products].each do |product, count| %>
+      <li><%= product %>: <%= count %> unidades</li>
+    <% end %>
+  </ol>
+  <% end %>
+
+  <p>Este es un reporte automático generado por el sistema.</p>
+</body>
+</html>

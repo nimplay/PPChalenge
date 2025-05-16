@@ -1,0 +1,10 @@
+:queues:
+  - default
+  - mailers
+  - reports
+
+:schedule:
+  daily_purchase_report:
+    cron: '0 8 * * *' # 8 AM cada día
+    class: 'DailyPurchaseReportJob'
+    queue: reports

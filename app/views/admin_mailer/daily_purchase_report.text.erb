@@ -1,0 +1,15 @@
+Reporte de Compras del <%= @report[:date] %>
+
+== Resumen ==
+Total de compras: <%= @report[:total_purchases] %>
+Ingresos totales: $<%= number_with_delimiter(@report[:total_revenue].round(2)) %>
+Nuevos clientes: <%= @report[:new_customers] %>
+
+<% if @report[:top_products].any? %>
+== Productos más vendidos ==
+<% @report[:top_products].each do |product, count| %>
+- <%= product %>: <%= count %> unidades
+<% end %>
+<% end %>
+
+Este es un reporte automático generado por el sistema.

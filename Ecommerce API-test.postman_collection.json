@@ -1,0 +1,404 @@
+{
+	"info": {
+		"_postman_id": "c1536a75-d7a7-4d3d-876d-1a2082f3b63f",
+		"name": "Ecommerce API-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24611472"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Verifica que la respuesta sea exitosa\r",
+							"pm.test(\"Status is 200\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Guarda el token en una variable de colección\r",
+							"pm.test(\"Store JWT token\", function() {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.collectionVariables.set(\"jwt_token\", jsonData.token);\r",
+							"    console.log(\"Token guardado:\", jsonData.token);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"admin1@store.com\",\r\n  \"password\": \"Admin123!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/auth",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "most_purchased",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const token = pm.collectionVariables.get(\"jwt_token\");\r",
+							"if (!token) {\r",
+							"    pm.sendRequest({\r",
+							"        url: 'http://localhost:3000/api/v1/auth',\r",
+							"        method: 'POST',\r",
+							"        header: 'Content-Type: application/json',\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                email: \"admin1@store.com\",\r",
+							"                password: \"Admin123!\"\r",
+							"            })\r",
+							"        }\r",
+							"    }, (err, res) => {\r",
+							"        pm.collectionVariables.set(\"jwt_token\", res.json().token);\r",
+							"    });\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/v1/categories/most_purchased",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"categories",
+						"most_purchased"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "top_revenue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const token = pm.collectionVariables.get(\"jwt_token\");\r",
+							"if (!token) {\r",
+							"    pm.sendRequest({\r",
+							"        url: 'http://localhost:3000/api/v1/auth',\r",
+							"        method: 'POST',\r",
+							"        header: 'Content-Type: application/json',\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                email: \"admin1@store.com\",\r",
+							"                password: \"Admin123!\"\r",
+							"            })\r",
+							"        }\r",
+							"    }, (err, res) => {\r",
+							"        pm.collectionVariables.set(\"jwt_token\", res.json().token);\r",
+							"    });\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/v1/categories/top_revenue",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"categories",
+						"top_revenue"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "purchases-search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (!pm.collectionVariables.get(\"jwt_token\")) {\r",
+							"    pm.sendRequest({\r",
+							"        url: pm.collectionVariables.get(\"base_url\") + '/api/v1/auth',\r",
+							"        method: 'POST',\r",
+							"        header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                email: \"admin1@store.com\",\r",
+							"                password: \"Admin123!\"\r",
+							"            })\r",
+							"        }\r",
+							"    }, (err, res) => {\r",
+							"        pm.collectionVariables.set(\"jwt_token\", res.json().token);\r",
+							"    }"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/v1/purchases/search?start_date=2023-01-01",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"purchases",
+						"search"
+					],
+					"query": [
+						{
+							"key": "start_date",
+							"value": "2023-01-01",
+							"description": "Fecha inicial (YYYY-MM-DD)"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "purchases-statistics",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (!pm.collectionVariables.get(\"jwt_token\")) {\r",
+							"    pm.sendRequest({\r",
+							"        url: pm.collectionVariables.get(\"base_url\") + '/api/v1/auth',\r",
+							"        method: 'POST',\r",
+							"        header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                email: \"admin1@store.com\",\r",
+							"                password: \"Admin123!\"\r",
+							"            })\r",
+							"        }\r",
+							"    }, (err, res) => {\r",
+							"        pm.collectionVariables.set(\"jwt_token\", res.json().token);\r",
+							"    }"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/v1/purchases/statistics?start_date=2023-01-01",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"purchases",
+						"statistics"
+					],
+					"query": [
+						{
+							"key": "start_date",
+							"value": "2023-01-01",
+							"description": "Fecha de inicio (formato YYYY-MM-DD)"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"// Verifica que la respuesta sea exitosa\r",
+					"pm.test(\"Status is 200\", function() {\r",
+					"    pm.response.to.have.status(200);\r",
+					"});\r",
+					"\r",
+					"// Guarda el token en una variable de colección\r",
+					"pm.test(\"Store JWT token\", function() {\r",
+					"    const jsonData = pm.response.json();\r",
+					"    pm.collectionVariables.set(\"jwt_token\", jsonData.token);\r",
+					"    console.log(\"Token guardado:\", jsonData.token);\r",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": null,
+			"type": "string"
+		}
+	]
+}

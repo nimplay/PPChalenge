@@ -10,8 +10,8 @@ class DailyPurchaseReportJob
       total_purchases: purchases.count,
       total_revenue: purchases.sum(:total_price),
       top_products: purchases.joins(:product)
-                            .group('products.name')
-                            .order('count_all DESC')
+                            .group("products.name")
+                            .order("count_all DESC")
                             .limit(5)
                             .count,
       new_customers: Customer.where(created_at: Date.yesterday.all_day).count
@@ -31,8 +31,8 @@ class DailyPurchaseReportJob
       total_purchases: purchases.count,
       total_revenue: purchases.sum(:total_price),
       top_products: purchases.joins(:product)
-                            .group('products.name')
-                            .order('count_all DESC')
+                            .group("products.name")
+                            .order("count_all DESC")
                             .limit(5)
                             .count,
       customers_count: purchases.distinct.count(:customer_id)

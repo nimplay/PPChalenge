@@ -5,8 +5,8 @@ gem "rails", "~> 8.0.2"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use postgres as the database for Active Record
-gem 'pg'
-gem 'activerecord-postgresql-adapter'
+gem "pg"
+gem "activerecord-postgresql-adapter"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
@@ -17,33 +17,33 @@ gem "turbo-rails"
 gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
-gem 'dotenv-rails', groups: [:development, :test]
+gem "dotenv-rails", groups: [ :development, :test ]
 
 
 # Authentication and users
-gem 'pundit'  # Role authorisation (optional)
+gem "pundit"  # Role authorisation (optional)
 
 # Images and files
-gem 'aws-sdk-s3'  # If you will upload images to AWS S3 (optional)
+gem "aws-sdk-s3"  # If you will upload images to AWS S3 (optional)
 
 # Audit of changes
-gem 'paper_trail'  # Track changes in models
+gem "paper_trail"  # Track changes in models
 
 # Design and frontend
-gem 'tailwindcss-rails'  # Modern CSS (Rails 8 includes it by default)
+gem "tailwindcss-rails"  # Modern CSS (Rails 8 includes it by default)
 
 # Development and testing
-gem 'annotate'  # Self-documenting models
-gem 'faker'  # Test datagem 'groupdate'
+gem "annotate"  # Self-documenting models
+gem "faker"  # Test datagem 'groupdate'
 
-gem 'groupdate'
-gem 'redis', '~> 5.0.0'
-gem 'redis-namespace', '~> 1.10'
-gem 'kaminari'
+gem "groupdate"
+gem "redis", "~> 5.0.0"
+gem "redis-namespace", "~> 1.10"
+gem "kaminari"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 gem "bcrypt", "~> 3.1.7"
-gem 'jwt'
+gem "jwt"
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
@@ -52,8 +52,8 @@ gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
 
-gem 'sidekiq'
-gem 'sidekiq-cron'
+gem "sidekiq"
+gem "sidekiq-cron"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -66,13 +66,13 @@ gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
-gem 'rspec', '~> 3.4'
+gem "rspec", "~> 3.4"
 group :development, :test do
-  gem 'rswag'
-  gem 'rswag-ui'
-  gem 'rswag-api'
-  gem 'factory_bot_rails'
-  gem 'database_cleaner-active_record'
+  gem "rswag"
+  gem "rswag-ui"
+  gem "rswag-api"
+  gem "factory_bot_rails"
+  gem "database_cleaner-active_record"
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
@@ -97,4 +97,4 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "rspec-rails", "~> 8.0", groups: [:development, :test]
+gem "rspec-rails", "~> 8.0", groups: [ :development, :test ]

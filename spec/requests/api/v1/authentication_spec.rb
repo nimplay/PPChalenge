@@ -14,7 +14,7 @@ RSpec.describe 'Api::V1::Authentication', type: :request do
           email: { type: :string },
           password: { type: :string }
         },
-        required: ['email', 'password']
+        required: [ 'email', 'password' ]
       }
 
       response '200', 'Inicio de sesión exitoso' do
@@ -37,16 +37,16 @@ RSpec.describe 'Api::V1::Authentication', type: :request do
   path '/api/v1/auth/logout' do
     delete 'Cierra sesión' do
       tags 'Authentication'
-      security [BearerAuth: []]
+      security [ BearerAuth: [] ]
       produces 'application/json'
 
       response '204', 'Sesión cerrada' do
-        let(:Authorization) { "Bearer #{valid_user.generate_jwt}" }
+        let(:authorization) { "Bearer #{valid_user.generate_jwt}" }
         run_test!
       end
 
       response '401', 'No autorizado' do
-        let(:Authorization) { 'Bearer invalid' }
+        let(:authorization) { 'Bearer invalid' }
         run_test!
       end
     end

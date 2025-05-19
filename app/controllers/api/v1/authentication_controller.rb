@@ -1,7 +1,7 @@
 module Api
   module V1
     class AuthenticationController < ApplicationController
-      skip_before_action :authenticate_request, only: [:login]
+      skip_before_action :authenticate_request, only: [ :login ]
 
       def login
         user = User.find_by(email: params[:email].downcase.strip)
@@ -17,7 +17,7 @@ module Api
             }
           }, status: :ok
         else
-          render json: { error: 'Email o contraseña inválidos' }, status: :unauthorized
+          render json: { error: "Email o contraseña inválidos" }, status: :unauthorized
         end
       end
 

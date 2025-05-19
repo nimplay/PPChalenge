@@ -8,8 +8,7 @@ RSpec.describe 'Purchases API', type: :request do
     get('search purchases') do
       tags 'Purchases'
       produces 'application/json'
-      security [BearerAuth: []]
-
+      security [ BearerAuth: [] ]
       parameter name: :start_date, in: :query, type: :string, required: false
       parameter name: :end_date, in: :query, type: :string, required: false
       parameter name: :category_id, in: :query, type: :integer, required: false
@@ -20,7 +19,7 @@ RSpec.describe 'Purchases API', type: :request do
 
       response(200, 'successful') do
         let(:user) { create(:user, :admin) }
-        let(:Authorization) { "Bearer #{generate_jwt_for(user)}" } # RSwag espera este nombre exacto
+        let(:authorization) { "Bearer #{generate_jwt_for(user)}" } # RSwag espera este nombre exacto
         let(:category) { create(:category) }
         let(:customer) { create(:customer) }
         let(:start_date) { '2023-01-01' }
@@ -54,7 +53,7 @@ RSpec.describe 'Purchases API', type: :request do
       end
 
       response(401, 'unauthorized') do
-        let(:Authorization) { nil }
+        let(:authorization) { nil }
         run_test!
       end
     end

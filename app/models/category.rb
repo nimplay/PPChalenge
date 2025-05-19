@@ -1,7 +1,7 @@
 class Category < ApplicationRecord
   # Associations
-  belongs_to :creator, class_name: 'User', optional: true
-  belongs_to :updater, class_name: 'User', optional: true
+  belongs_to :creator, class_name: "User", optional: true
+  belongs_to :updater, class_name: "User", optional: true
   has_many :product_categories, dependent: :destroy
   has_many :products, through: :product_categories
 
@@ -18,11 +18,10 @@ class Category < ApplicationRecord
   def log_creation
     AuditLog.create!(
       admin: creator || User.admins.first || User.first,
-      action: 'create',
+      action: "create",
       auditable: self,
       audit_changes: attributes_for_audit
     )
-
   end
 
   def log_update
@@ -30,16 +29,16 @@ class Category < ApplicationRecord
 
     AuditLog.create!(
       admin: creator || User.admins.first,
-      action: 'create',
+      action: "create",
       auditable: self,
       audit_changes: attributes_for_audit
     )
   end
    def attributes_for_audit
-    attributes.except('id', 'created_at', 'updated_at', 'creator_id', 'updater_id')
+    attributes.except("id", "created_at", "updated_at", "creator_id", "updater_id")
   end
 
   def saved_changes_for_audit
-    saved_changes.except('updated_at', 'updater_id')
+    saved_changes.except("updated_at", "updater_id")
   end
 end

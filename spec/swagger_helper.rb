@@ -29,7 +29,7 @@ RSpec.configure do |config|
               email: { type: :string, example: 'admin@store.com' },
               password: { type: :string, example: 'password123' }
             },
-            required: ['email', 'password']
+            required: [ 'email', 'password' ]
           },
           Error: {
             type: :object,

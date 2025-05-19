@@ -5,7 +5,7 @@ FactoryBot.define do
     price { Faker::Commerce.price(range: 1.0..100.0) }
     stock { Faker::Number.between(from: 1, to: 100) }
     product_type { 'physical' }
-    association :creator, factory: :user 
+    association :creator, factory: :user
 
     trait :with_category do
       after(:create) do |product|

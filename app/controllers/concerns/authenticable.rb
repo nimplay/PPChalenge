@@ -9,11 +9,11 @@ module Authenticable
   private
 
   def authenticate_request
-    auth_header = request.headers['Authorization']
-    token = auth_header&.split(' ')&.last
+    auth_header = request.headers["Authorization"]
+    token = auth_header&.split(" ")&.last
 
     unless token
-      return render_unauthorized('Token missing')
+      return render_unauthorized("Token missing")
     end
 
     begin
@@ -21,12 +21,12 @@ module Authenticable
       @current_user = find_user(decoded_token)
 
       if token_revoked?(decoded_token, @current_user)
-        return render_unauthorized('Token revoked')
+        render_unauthorized("Token revoked")
       end
     rescue JWT::DecodeError => e
-      return render_unauthorized('Invalid token')
+      render_unauthorized("Invalid token")
     rescue ActiveRecord::RecordNotFound => e
-      return render_unauthorized('User not found')
+      render_unauthorized("User not found")
     end
   end
 
@@ -35,16 +35,16 @@ module Authenticable
       token,
       Rails.application.credentials.secret_key_base,
       true,
-      { algorithm: 'HS256' }
+      { algorithm: "HS256" }
     ).first
   end
 
   def find_user(decoded_token)
-    User.find(decoded_token['sub'])
+    User.find(decoded_token["sub"])
   end
 
   def token_revoked?(decoded_token, user)
-    user.jti != decoded_token['jti']
+    user.jti != decoded_token["jti"]
   end
 
   def render_unauthorized(message)

@@ -1,7 +1,7 @@
 class Product < ApplicationRecord
   # Asociaciones
-  belongs_to :creator, class_name: 'User', foreign_key: 'user_id'
-  belongs_to :updater, class_name: 'User', foreign_key: 'updated_by_id', optional: true
+  belongs_to :creator, class_name: "User", foreign_key: "user_id"
+  belongs_to :updater, class_name: "User", foreign_key: "updated_by_id", optional: true
 
   has_many :product_categories, dependent: :destroy
   has_many :categories, through: :product_categories
@@ -9,9 +9,9 @@ class Product < ApplicationRecord
 
   # Configuración de Active Storage
   has_many_attached :images do |attachable|
-    attachable.variant :thumb, resize_to_limit: [300, 300]
-    attachable.variant :medium, resize_to_limit: [600, 600]
-    attachable.variant :large, resize_to_limit: [1200, 1200]
+    attachable.variant :thumb, resize_to_limit: [ 300, 300 ]
+    attachable.variant :medium, resize_to_limit: [ 600, 600 ]
+    attachable.variant :large, resize_to_limit: [ 1200, 1200 ]
   end
 
   # Constantes de validación
@@ -32,10 +32,10 @@ class Product < ApplicationRecord
 
   # Enumerados
   enum :product_type, {
-    physical: 'physical',
-    digital: 'digital',
-    service: 'service'
-  }, default: 'physical'
+    physical: "physical",
+    digital: "digital",
+    service: "service"
+  }, default: "physical"
 
   # Scopes
   scope :with_images, -> { joins(:images_attachments).distinct }
@@ -104,29 +104,28 @@ class Product < ApplicationRecord
   def log_creation
     AuditLog.create!(
       admin: creator,
-      action: 'create',
+      action: "create",
       auditable: self,
-      audit_changes: attributes.except('id', 'created_at', 'updated_at')
+      audit_changes: attributes.except("id", "created_at", "updated_at")
     )
-
   end
 
   def log_update
     return unless saved_changes.any?
     AuditLog.create!(
       admin: updater || creator,
-      action: 'update',
+      action: "update",
       auditable: self,
-      audit_changes: saved_changes.except('updated_at', 'updated_by_id')
+      audit_changes: saved_changes.except("updated_at", "updated_by_id")
     )
   end
 
   def create_audit_log(action:, changes:)
     AuditLog.create!(
       admin: updater || creator,
-      action: 'update',
+      action: "update",
       auditable: self,
-      audit_changes: saved_changes.except('updated_at', 'updater_id')
+      audit_changes: saved_changes.except("updated_at", "updater_id")
     )
   end
 end

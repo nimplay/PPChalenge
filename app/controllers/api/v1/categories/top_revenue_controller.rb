@@ -3,7 +3,7 @@ module Api
     module Categories
       class TopRevenueController < ApplicationController
         include Authenticable
-        before_action :set_cache_key, only: [:index]
+        before_action :set_cache_key, only: [ :index ]
 
         def index
           @result = cached_categories_with_top_revenue
@@ -15,7 +15,7 @@ module Api
         def set_cache_key
           permitted_params = params.permit(
             :category_id, :start_date, :end_date, :force_refresh,
-            top_revenue: [:category_id, :start_date, :end_date, :force_refresh]
+            top_revenue: [ :category_id, :start_date, :end_date, :force_refresh ]
           )
 
           cache_params = permitted_params.to_h.deep_symbolize_keys
@@ -36,15 +36,15 @@ module Api
 
         def base_query
           Category.joins(products: :purchases)
-                  .joins('LEFT JOIN users ON products.user_id = users.id')
+                  .joins("LEFT JOIN users ON products.user_id = users.id")
                   .select(
-                    'categories.id as category_id',
-                    'categories.name as category_name',
-                    'products.id as product_id',
-                    'products.name as product_name',
-                    'products.price as product_price',
-                    'SUM(purchases.quantity * products.price) as revenue',
-                    'users.email as creator_email'
+                    "categories.id as category_id",
+                    "categories.name as category_name",
+                    "products.id as product_id",
+                    "products.name as product_name",
+                    "products.price as product_price",
+                    "SUM(purchases.quantity * products.price) as revenue",
+                    "users.email as creator_email"
                   )
         end
 
@@ -55,7 +55,7 @@ module Api
 
         def category_filter
           return unless params.dig(:top_revenue, :category_id) || params[:category_id]
-          { 'categories.id' => params.dig(:top_revenue, :category_id) || params[:category_id] }
+          { "categories.id" => params.dig(:top_revenue, :category_id) || params[:category_id] }
         end
 
         def date_range_filter
@@ -73,8 +73,8 @@ module Api
         end
 
         def process_query_results(query)
-          results = query.group('categories.id, products.id, users.email')
-                         .order('categories.id, revenue DESC NULLS LAST')
+          results = query.group("categories.id, products.id, users.email")
+                         .order("categories.id, revenue DESC NULLS LAST")
 
           build_response_hash(results)
         end

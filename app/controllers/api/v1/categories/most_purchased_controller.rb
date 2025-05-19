@@ -3,7 +3,7 @@ module Api
     module Categories
       class MostPurchasedController < ApplicationController
         include Authenticable
-        before_action :set_cache_key, only: [:index]
+        before_action :set_cache_key, only: [ :index ]
 
         # GET /api/v1/categories/most_purchased
         def index
@@ -16,7 +16,7 @@ module Api
         def set_cache_key
           permitted_params = params.permit(
             :limit, :force_refresh, :start_date, :end_date, :category_id,
-            most_purchased: [:limit, :force_refresh, :start_date, :end_date, :category_id]
+            most_purchased: [ :limit, :force_refresh, :start_date, :end_date, :category_id ]
           )
 
           cache_params = permitted_params.to_h.deep_symbolize_keys
@@ -37,15 +37,15 @@ module Api
 
         def base_query
           Category.joins(products: :purchases)
-                  .joins('LEFT JOIN users ON products.user_id = users.id')
+                  .joins("LEFT JOIN users ON products.user_id = users.id")
                   .select(
-                    'categories.id as category_id',
-                    'categories.name as category_name',
-                    'products.id as product_id',
-                    'products.name as product_name',
-                    'products.price as product_price',
-                    'COUNT(purchases.id) as purchase_count',
-                    'users.email as creator_email'
+                    "categories.id as category_id",
+                    "categories.name as category_name",
+                    "products.id as product_id",
+                    "products.name as product_name",
+                    "products.price as product_price",
+                    "COUNT(purchases.id) as purchase_count",
+                    "users.email as creator_email"
                   )
         end
 
@@ -56,7 +56,7 @@ module Api
 
         def category_filter
           return unless params.dig(:most_purchased, :category_id) || params[:category_id]
-          { 'categories.id' => params.dig(:most_purchased, :category_id) || params[:category_id] }
+          { "categories.id" => params.dig(:most_purchased, :category_id) || params[:category_id] }
         end
 
         def date_range_filter
@@ -74,8 +74,8 @@ module Api
         end
 
         def process_query_results(query)
-          results = query.group('categories.id, products.id, users.email')
-                        .order('categories.id, purchase_count DESC')
+          results = query.group("categories.id, products.id, users.email")
+                        .order("categories.id, purchase_count DESC")
 
           build_response_hash(results)
         end

@@ -3,15 +3,15 @@ class User < ApplicationRecord
 
   # Roles
   enum :role, {
-    user: 'user',
-    admin: 'admin',
-    manager: 'manager'
-  }, default: 'user', prefix: true
+    user: "user",
+    admin: "admin",
+    manager: "manager"
+  }, default: "user", prefix: true
 
   # Relaciones
-  has_many :created_products, class_name: 'Product', foreign_key: 'created_by_id'
-  has_many :updated_products, class_name: 'Product', foreign_key: 'updated_by_id'
-  has_many :audit_logs, foreign_key: 'admin_id'
+  has_many :created_products, class_name: "Product", foreign_key: "created_by_id"
+  has_many :updated_products, class_name: "Product", foreign_key: "updated_by_id"
+  has_many :audit_logs, foreign_key: "admin_id"
 
   # Validaciones
   validates :email, presence: true, uniqueness: true
@@ -19,9 +19,9 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }, if: :password_required?
 
   # Scopes
-  scope :admins, -> { where(role: 'admin') }
-  scope :managers, -> { where(role: 'manager') }
-  scope :regular_users, -> { where(role: 'user') }
+  scope :admins, -> { where(role: "admin") }
+  scope :managers, -> { where(role: "manager") }
+  scope :regular_users, -> { where(role: "user") }
 
   before_create :generate_jti
 

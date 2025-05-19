@@ -4,11 +4,11 @@ module Api
       class SearchController < ApplicationController
         include Authenticable
         before_action :validate_admin_role
-        before_action :set_pagination_defaults, only: [:index]
+        before_action :set_pagination_defaults, only: [ :index ]
 
         def index
           @purchases = filtered_purchases
-                      .includes(:product, :customer, product: [:categories, :creator])
+                      .includes(:product, :customer, product: [ :categories, :creator ])
                       .page(@page)
                       .per(@per_page)
 
@@ -19,7 +19,7 @@ module Api
 
         def validate_admin_role
           return if current_user.admin? || current_user.manager?
-          render_unauthorized('Access restricted to admins and managers')
+          render_unauthorized("Access restricted to admins and managers")
         end
 
         def set_pagination_defaults
@@ -36,7 +36,7 @@ module Api
         end
 
         def filters
-          [:date, :category, :customer, :admin]
+          [ :date, :category, :customer, :admin ]
         end
 
         def date_filter?

@@ -1,5 +1,5 @@
 class AuditLog < ApplicationRecord
-  belongs_to :admin, class_name: 'User'
+  belongs_to :admin, class_name: "User"
   belongs_to :auditable, polymorphic: true
 
   validates :action, presence: true, inclusion: { in: %w[create update delete] }

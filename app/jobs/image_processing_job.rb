@@ -5,7 +5,7 @@ class ImageProcessingJob < ApplicationJob
     product = Product.find(product_id)
 
     product.images.each do |image|
-      [:thumb, :medium, :large].each do |variant|
+      [ :thumb, :medium, :large ].each do |variant|
         image.variant(variant).processed
       end
     end

@@ -4,7 +4,7 @@ module Api
       class StatisticsController < ApplicationController
         include Authenticable
         before_action :validate_admin_role
-        before_action :set_date_range, only: [:index]
+        before_action :set_date_range, only: [ :index ]
 
         def index
           stats = {
@@ -13,7 +13,7 @@ module Api
             average_order_value: calculate_average_order_value,
             top_products: top_products(5),
             revenue_by_category: revenue_by_category,
-            timeline_data: timeline_data(params[:granularity] || 'day')
+            timeline_data: timeline_data(params[:granularity] || "day")
           }
 
           render json: { data: stats }
@@ -23,7 +23,7 @@ module Api
 
         def validate_admin_role
           return if current_user.admin? || current_user.manager?
-          render_unauthorized('Access restricted to admins and managers')
+          render_unauthorized("Access restricted to admins and managers")
         end
 
         def set_date_range
@@ -33,7 +33,7 @@ module Api
         end
 
         def calculate_total_revenue
-          base_query.sum('purchases.quantity * products.price')
+          base_query.sum("purchases.quantity * products.price")
         end
 
         def calculate_purchase_count
@@ -49,9 +49,9 @@ module Api
         def top_products(limit)
           Purchase.joins(:product)
                   .where(date_filter)
-                  .group('products.id, products.name')
-                  .select('products.id, products.name, SUM(purchases.quantity * products.price) as revenue')
-                  .order('revenue DESC')
+                  .group("products.id, products.name")
+                  .select("products.id, products.name, SUM(purchases.quantity * products.price) as revenue")
+                  .order("revenue DESC")
                   .limit(limit)
                   .map do |p|
                     {
@@ -65,9 +65,9 @@ module Api
         def revenue_by_category
           Category.joins(products: :purchases)
                   .where(date_filter)
-                  .group('categories.id, categories.name')
-                  .select('categories.id, categories.name, SUM(purchases.quantity * products.price) as revenue')
-                  .order('revenue DESC')
+                  .group("categories.id, categories.name")
+                  .select("categories.id, categories.name, SUM(purchases.quantity * products.price) as revenue")
+                  .order("revenue DESC")
                   .map do |c|
                     {
                       id: c.id,
@@ -79,13 +79,13 @@ module Api
 
         def timeline_data(granularity)
           case granularity
-          when 'hour'
+          when "hour"
             group_by_hour
-          when 'day'
+          when "day"
             group_by_day
-          when 'week'
+          when "week"
             group_by_week
-          when 'month'
+          when "month"
             group_by_month
           else
             group_by_day
@@ -93,23 +93,23 @@ module Api
         end
 
         def group_by_hour
-          base_query.group_by_hour('purchases.created_at', format: '%Y-%m-%d %H:00')
-                   .sum('purchases.quantity * products.price')
+          base_query.group_by_hour("purchases.created_at", format: "%Y-%m-%d %H:00")
+                   .sum("purchases.quantity * products.price")
         end
 
         def group_by_day
-          base_query.group_by_day('purchases.created_at')
-                   .sum('purchases.quantity * products.price')
+          base_query.group_by_day("purchases.created_at")
+                   .sum("purchases.quantity * products.price")
         end
 
         def group_by_week
-          base_query.group_by_week('purchases.created_at')
-                   .sum('purchases.quantity * products.price')
+          base_query.group_by_week("purchases.created_at")
+                   .sum("purchases.quantity * products.price")
         end
 
         def group_by_month
-          base_query.group_by_month('purchases.created_at')
-                   .sum('purchases.quantity * products.price')
+          base_query.group_by_month("purchases.created_at")
+                   .sum("purchases.quantity * products.price")
         end
 
         def base_query

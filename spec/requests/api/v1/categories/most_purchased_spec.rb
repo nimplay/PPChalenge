@@ -8,7 +8,7 @@ RSpec.describe 'Categories Most Purchased API', type: :request do
     get('List most purchased products by category') do
       tags 'Categories'
       produces 'application/json'
-      security [BearerAuth: []]
+      security [ BearerAuth: [] ]
 
       parameter name: :category_id, in: :query, type: :integer, required: false, description: 'Filter by category ID'
       parameter name: :start_date, in: :query, type: :string, required: false, description: 'Start date (YYYY-MM-DD)'
@@ -17,7 +17,7 @@ RSpec.describe 'Categories Most Purchased API', type: :request do
 
       response(200, 'successful') do
         let(:user) { create(:user, :admin) }
-        let(:Authorization) { "Bearer #{generate_jwt_for(user)}" }
+        let(:authorization) { "Bearer #{generate_jwt_for(user)}" }
         let(:category) { create(:category, creator: user) }
         let!(:product) { create(:product, creator: user) }
         let!(:product_category) { create(:product_category, product: product, category: category) }
@@ -38,7 +38,7 @@ RSpec.describe 'Categories Most Purchased API', type: :request do
 
       response(200, 'with category filter') do
         let(:user) { create(:user, :admin) }
-        let(:Authorization) { "Bearer #{generate_jwt_for(user)}" }
+        let(:authorization) { "Bearer #{generate_jwt_for(user)}" }
         let(:category1) { create(:category, creator: user) }
         let(:category2) { create(:category, creator: user) }
         let!(:product1) { create(:product, creator: user) }
@@ -58,7 +58,7 @@ RSpec.describe 'Categories Most Purchased API', type: :request do
 
       response(200, 'with date range filter') do
         let(:user) { create(:user, :admin) }
-        let(:Authorization) { "Bearer #{generate_jwt_for(user)}" }
+        let(:authorization) { "Bearer #{generate_jwt_for(user)}" }
         let(:category) { create(:category, creator: user) }
         let!(:product) { create(:product, creator: user) }
         let!(:product_category) { create(:product_category, product: product, category: category) }
@@ -78,7 +78,7 @@ RSpec.describe 'Categories Most Purchased API', type: :request do
       end
 
       response(401, 'unauthorized') do
-        let(:Authorization) { nil }
+        let(:authorization) { nil }
         run_test!
       end
     end

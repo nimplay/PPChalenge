@@ -13,7 +13,7 @@ Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f 
 
 RSpec.configure do |config|
   # Configuraciones básicas
-  config.fixture_paths = ["#{Rails.root}/spec/fixtures"]
+  config.fixture_paths = [ "#{Rails.root}/spec/fixtures" ]
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
@@ -34,11 +34,11 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :transaction
   end
 
-  config.before(:each) do
+  config.before do
     DatabaseCleaner.start
   end
 
-  config.after(:each) do
+  config.after do
     DatabaseCleaner.clean
   end
 
@@ -49,7 +49,7 @@ end
 
 # Configuración OpenAPI/Swagger
 RSpec.configure do |config|
-  config.before(:each) do |example|
+  config.before do |example|
     if example.metadata[:openapi_spec]
       config.swagger_docs = {
         'v1/swagger.json' => {

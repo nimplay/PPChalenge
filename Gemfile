@@ -37,7 +37,7 @@ gem "annotate"  # Self-documenting models
 gem "faker"  # Test datagem 'groupdate'
 
 gem "groupdate"
-gem "redis", "~> 5.0.0"
+gem "redis", "~> 5.4.0"
 gem "redis-namespace", "~> 1.10"
 gem "kaminari"
 
